@@ -6,9 +6,9 @@ import { CategoryTabs } from "@/components/dashboard/CategoryTabs";
 import { FilterPanel, DEFAULT_FILTERS } from "@/components/dashboard/FilterPanel";
 import { ListingCard } from "@/components/dashboard/ListingCard";
 import { StatsRow } from "@/components/dashboard/StatsRow";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { getListings, daysUntil } from "@/lib/data";
 import type { FilterState, ListingType } from "@/lib/types";
-import { SearchX } from "lucide-react";
 
 const allListings = getListings();
 const locations = Array.from(new Set(allListings.map((l) => l.location))).sort();
@@ -67,11 +67,7 @@ export default function DashboardPage() {
 
         <div className="min-w-0 flex-1">
           {filtered.length === 0 ? (
-            <div className="flex flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-line py-16 text-center">
-              <SearchX className="text-text-muted" size={28} />
-              <p className="text-sm font-medium text-text-primary">Ничего не найдено</p>
-              <p className="text-xs text-text-muted">Попробуйте изменить фильтры или сбросить их</p>
-            </div>
+            <EmptyState />
           ) : (
             <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
               {filtered.map((listing) => (

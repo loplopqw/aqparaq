@@ -7,7 +7,6 @@ import {
   User,
   Users,
   GraduationCap,
-  Lock,
   ChevronsLeft,
   ChevronsRight,
   Compass,
@@ -21,6 +20,8 @@ const user = getUser();
 const navItems = [
   { href: "/", label: "Лента", icon: LayoutDashboard },
   { href: "/career-track", label: "AI-Карьерный трек", icon: Compass },
+  { href: "/alumni", label: "Alumni Network", icon: Users },
+  { href: "/mentorship", label: "Менторство", icon: GraduationCap },
   { href: "/profile", label: "Личный кабинет", icon: User },
 ];
 
@@ -69,17 +70,6 @@ export function Sidebar() {
               </li>
             );
           })}
-
-          <li className="pt-3">
-            {!collapsed && (
-              <p className="px-3 pb-1 text-[11px] font-semibold uppercase tracking-wider text-text-muted">
-                Скоро
-              </p>
-            )}
-          </li>
-
-          <SidebarComingSoon icon={Users} label="Alumni Network" collapsed={collapsed} />
-          <SidebarComingSoon icon={GraduationCap} label="Менторство" collapsed={collapsed} />
         </ul>
       </nav>
 
@@ -113,32 +103,5 @@ export function Sidebar() {
         </button>
       </div>
     </aside>
-  );
-}
-
-function SidebarComingSoon({
-  icon: Icon,
-  label,
-  collapsed,
-}: {
-  icon: typeof Users;
-  label: string;
-  collapsed: boolean;
-}) {
-  return (
-    <li>
-      <div
-        className="flex cursor-not-allowed items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-text-muted"
-        title={collapsed ? `${label} — скоро` : undefined}
-      >
-        <Icon size={18} strokeWidth={2} className="shrink-0" />
-        {!collapsed && (
-          <span className="flex flex-1 items-center justify-between truncate">
-            <span className="truncate">{label}</span>
-            <Lock size={12} className="shrink-0" />
-          </span>
-        )}
-      </div>
-    </li>
   );
 }
