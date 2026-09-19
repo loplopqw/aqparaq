@@ -123,6 +123,20 @@ export interface FilterState {
   sort: SortOption;
 }
 
+export type InterviewQuestionCategory = "intro" | "technical" | "behavioral" | "skillGap";
+
+export interface InterviewQuestion {
+  id: string;
+  category: InterviewQuestionCategory;
+  prompt: string;
+  keywords: string[];
+}
+
+export interface AnswerFeedback {
+  score: number;
+  comment: string;
+}
+
 export interface AlumniProfile {
   id: string;
   name: string;
@@ -158,6 +172,7 @@ export interface RoadmapStage {
   description: string;
   course?: CatalogCourse;
   kind: "skill" | "apply" | "interview";
+  interviewListingId?: string;
 }
 
 export interface Database {

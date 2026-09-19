@@ -11,10 +11,14 @@ export function MatchScoreRing({
   score,
   size = 56,
   showLabel = true,
+  label = "Match Score",
+  statusLabels = MATCH_SCORE_LABELS,
 }: {
   score: number;
   size?: number;
   showLabel?: boolean;
+  label?: string;
+  statusLabels?: Record<ReturnType<typeof matchScoreStatus>, string>;
 }) {
   const status = matchScoreStatus(score);
   const stroke = 4;
@@ -24,7 +28,7 @@ export function MatchScoreRing({
   const color = STATUS_VAR[status];
 
   return (
-    <div className="flex flex-col items-center gap-1" title={`${MATCH_SCORE_LABELS[status]}: ${score}%`}>
+    <div className="flex flex-col items-center gap-1" title={`${statusLabels[status]}: ${score}%`}>
       <div className="relative" style={{ width: size, height: size }}>
         <svg width={size} height={size} className="-rotate-90">
           <circle
@@ -54,7 +58,7 @@ export function MatchScoreRing({
       </div>
       {showLabel && (
         <span className="text-center text-[10px] font-medium leading-tight text-text-muted">
-          Match Score
+          {label}
         </span>
       )}
     </div>

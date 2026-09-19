@@ -1,7 +1,9 @@
 import db from "@/data/db.json";
 import type {
+  AnswerFeedback,
   CatalogCourse,
   Database,
+  InterviewQuestion,
   Listing,
   ListingType,
   RoadmapStage,
@@ -37,6 +39,97 @@ export function getListingById(id: string) {
 
 export function getCourseById(id: string): CatalogCourse | undefined {
   return database.courseCatalog.find((c) => c.id === id);
+}
+
+export const INTERVIEW_SCORE_LABELS: Record<ReturnType<typeof matchScoreStatus>, string> = {
+  good: "Отличный ответ",
+  warning: "Хороший ответ",
+  serious: "Есть куда расти",
+  critical: "Нужно потренироваться",
+};
+
+export const INTERVIEW_CATEGORY_LABELS: Record<InterviewQuestion["category"], string> = {
+  intro: "Вступление",
+  technical: "Технический вопрос",
+  behavioral: "Поведенческий вопрос",
+  skillGap: "Skill Gap",
+};
+
+export function getInterviewQuestions(listing: Listing): InterviewQuestion[] {
+  const questions: InterviewQuestion[] = [
+    {
+      id: "intro",
+      category: "intro",
+      prompt: `Расскажите о себе и почему вас заинтересовала позиция «${listing.title}» в ${listing.company}?`,
+      keywords: [],
+    },
+  ];
+
+  listing.stack.slice(0, 2).forEach((skill, i) => {
+    questions.push({
+      id: `tech-${i}`,
+      category: "technical",
+      prompt: `Расскажите о своём опыте работы с ${skill}. Приведите конкретный пример задачи, которую вы решали.`,
+      keywords: [skill],
+    });
+  });
+
+  if (listing.requirements[0]) {
+    questions.push({
+      id: "requirement",
+      category: "technical",
+      prompt: `В требованиях к вакансии указано: «${listing.requirements[0]}». Расскажите, как ваш опыт соответствует этому требованию.`,
+      keywords: [listing.requirements[0]],
+    });
+  }
+
+  questions.push({
+    id: "behavioral",
+    category: "behavioral",
+    prompt: "Опишите ситуацию, когда вам пришлось решать сложную задачу в сжатые сроки. Как вы справились?",
+    keywords: [],
+  });
+
+  if (listing.skillGap[0]) {
+    questions.push({
+      id: "gap",
+      category: "skillGap",
+      prompt: `По анализу вашего профиля у вас пока нет опыта с ${listing.skillGap[0].skill}. Как бы вы подошли к быстрому изучению этого навыка перед выходом на позицию?`,
+      keywords: [listing.skillGap[0].skill],
+    });
+  }
+
+  return questions;
+}
+
+export function evaluateAnswer(question: InterviewQuestion, answer: string): AnswerFeedback {
+  const trimmed = answer.trim();
+  if (!trimmed) {
+    return { score: 0, comment: "Ответ пустой — попробуйте сформулировать хотя бы пару предложений." };
+  }
+
+  const wordCount = trimmed.split(/\s+/).length;
+  const lower = trimmed.toLowerCase();
+  const matchedKeywords = question.keywords.filter((k) => lower.includes(k.toLowerCase()));
+
+  let score = 40;
+  if (wordCount >= 15) score += 20;
+  if (wordCount >= 40) score += 10;
+  score += question.keywords.length > 0 ? Math.round((matchedKeywords.length / question.keywords.length) * 30) : 15;
+  score = Math.min(100, score);
+
+  const comments: string[] = [];
+  if (wordCount < 15) {
+    comments.push("Ответ короткий — постарайтесь раскрыть его подробнее, на конкретном примере.");
+  }
+  if (question.keywords.length > 0 && matchedKeywords.length === 0) {
+    comments.push(`Упомяните конкретно «${question.keywords.join(", ")}», чтобы показать релевантный опыт.`);
+  }
+  if (comments.length === 0) {
+    comments.push("Хороший структурированный ответ с релевантными деталями.");
+  }
+
+  return { score, comment: comments.join(" ") };
 }
 
 export function getAlumni() {
@@ -156,12 +249,14 @@ export function getCareerRoadmap(): RoadmapStage[] {
     kind: "apply",
   });
 
+  const topListing = [...database.listings].sort((a, b) => b.matchScore - a.matchScore)[0];
   stages.push({
     id: "interview",
     title: "Подготовиться к собеседованию",
     timeframe: "Перед откликом",
-    description: "Пройти тренировочное интервью и получить обратную связь по ответам.",
+    description: "Пройти тренировочное MOCK-интервью с ИИ и получить обратную связь по ответам.",
     kind: "interview",
+    interviewListingId: topListing?.id,
   });
 
   return stages;

@@ -1,10 +1,19 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, ExternalLink, MapPin, Wifi, Clock, CalendarDays, Handshake, Users } from "lucide-react";
+import {
+  ArrowLeft,
+  ExternalLink,
+  MapPin,
+  Wifi,
+  Clock,
+  CalendarDays,
+  Handshake,
+  Users,
+  MessagesSquare,
+} from "lucide-react";
 import { Topbar } from "@/components/layout/Topbar";
 import { MatchScoreRing } from "@/components/dashboard/MatchScoreRing";
 import { SkillGapBlock } from "@/components/dashboard/SkillGapBlock";
-import { ComingSoonButton } from "@/components/ui/ComingSoon";
 import { Badge } from "@/components/ui/Badge";
 import {
   getListingById,
@@ -150,6 +159,16 @@ export default async function JobDetailPage({ params }: { params: Promise<{ id: 
           </div>
 
           <div className="space-y-2 rounded-lg border border-line bg-surface p-5">
+            <h4 className="text-xs font-semibold uppercase tracking-wide text-text-muted">
+              Подготовка к отклику
+            </h4>
+            <Link
+              href={`/jobs/${listing.id}/interview`}
+              className="flex w-full items-center justify-center gap-2 rounded-md bg-accent px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-accent-hover"
+            >
+              <MessagesSquare size={16} />
+              Пройти MOCK-интервью с ИИ
+            </Link>
             <Link
               href="/alumni"
               className="flex w-full items-center justify-center gap-2 rounded-md border border-line px-4 py-2.5 text-sm font-medium text-text-secondary transition-colors hover:bg-surface-hover hover:text-text-primary"
@@ -164,13 +183,6 @@ export default async function JobDetailPage({ params }: { params: Promise<{ id: 
                 {listing.company}
               </p>
             )}
-          </div>
-
-          <div className="space-y-2 rounded-lg border border-line bg-surface p-5">
-            <h4 className="text-xs font-semibold uppercase tracking-wide text-text-muted">
-              Запланированные фичи
-            </h4>
-            <ComingSoonButton label="Пройти MOCK-интервью с ИИ" />
           </div>
 
           <div className="rounded-lg border border-line bg-surface p-5 text-xs text-text-muted">
