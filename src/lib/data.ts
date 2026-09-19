@@ -1,5 +1,13 @@
 import db from "@/data/db.json";
-import type { CatalogCourse, Database, Listing, ListingType } from "@/lib/types";
+import type {
+  CatalogCourse,
+  Database,
+  Listing,
+  ListingType,
+  RoadmapStage,
+  RoleReadiness,
+  SkillGapSummaryItem,
+} from "@/lib/types";
 
 const database = db as unknown as Database;
 
@@ -81,3 +89,68 @@ export const MATCH_SCORE_LABELS: Record<ReturnType<typeof matchScoreStatus>, str
   serious: "Слабое совпадение",
   critical: "Низкое совпадение",
 };
+
+export function getSkillGapSummary(limit = 5): SkillGapSummaryItem[] {
+  const counts = new Map<string, { count: number; courseId: string }>();
+  for (const listing of database.listings) {
+    for (const gap of listing.skillGap) {
+      const existing = counts.get(gap.skill);
+      if (existing) {
+        existing.count += 1;
+      } else {
+        counts.set(gap.skill, { count: 1, courseId: gap.recommendedCourseId });
+      }
+    }
+  }
+  return Array.from(counts.entries())
+    .sort((a, b) => b[1].count - a[1].count)
+    .slice(0, limit)
+    .map(([skill, v]) => ({ skill, count: v.count, course: getCourseById(v.courseId) }));
+}
+
+export function getRoleReadiness(): RoleReadiness[] {
+  return database.user.targetRoles.map((role) => {
+    const keywords = role.toLowerCase().split(" ");
+    const matchedListings = database.listings.filter((l) => {
+      const title = l.title.toLowerCase();
+      return keywords.every((kw) => title.includes(kw));
+    });
+    const pool = matchedListings.length > 0 ? matchedListings : database.listings;
+    const avgMatch = Math.round(pool.reduce((sum, l) => sum + l.matchScore, 0) / pool.length);
+    return { role, avgMatch, matchedListings };
+  });
+}
+
+export function getCareerRoadmap(): RoadmapStage[] {
+  const gaps = getSkillGapSummary(3);
+  const timeframes = ["Ближайшие 2–4 недели", "Через 1–2 месяца", "Через 2–3 месяца"];
+
+  const stages: RoadmapStage[] = gaps.map((gap, i) => ({
+    id: `skill-${gap.skill}`,
+    title: `Закрыть пробел: ${gap.skill}`,
+    timeframe: timeframes[i] ?? `Этап ${i + 1}`,
+    description: `Этот навык отмечен как недостающий в ${gap.count} предложени${
+      gap.count === 1 ? "и" : "ях"
+    } из вашей ленты.`,
+    course: gap.course,
+    kind: "skill",
+  }));
+
+  stages.push({
+    id: "apply",
+    title: "Откликнуться на топ-подборку",
+    timeframe: "После закрытия ключевых пробелов",
+    description: "Подать заявки на предложения с самым высоким Match Score из вашей ленты.",
+    kind: "apply",
+  });
+
+  stages.push({
+    id: "interview",
+    title: "Подготовиться к собеседованию",
+    timeframe: "Перед откликом",
+    description: "Пройти тренировочное интервью и получить обратную связь по ответам.",
+    kind: "interview",
+  });
+
+  return stages;
+}

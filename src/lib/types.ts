@@ -123,6 +123,27 @@ export interface FilterState {
   sort: SortOption;
 }
 
+export interface SkillGapSummaryItem {
+  skill: string;
+  count: number;
+  course?: CatalogCourse;
+}
+
+export interface RoleReadiness {
+  role: string;
+  avgMatch: number;
+  matchedListings: Listing[];
+}
+
+export interface RoadmapStage {
+  id: string;
+  title: string;
+  timeframe: string;
+  description: string;
+  course?: CatalogCourse;
+  kind: "skill" | "apply" | "interview";
+}
+
 export interface Database {
   user: UserProfile;
   partners: Partner[];

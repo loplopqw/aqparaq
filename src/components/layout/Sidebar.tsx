@@ -20,6 +20,7 @@ const user = getUser();
 
 const navItems = [
   { href: "/", label: "Лента", icon: LayoutDashboard },
+  { href: "/career-track", label: "AI-Карьерный трек", icon: Compass },
   { href: "/profile", label: "Личный кабинет", icon: User },
 ];
 
@@ -78,7 +79,6 @@ export function Sidebar() {
           </li>
 
           <SidebarComingSoon icon={Users} label="Alumni Network" collapsed={collapsed} />
-          <SidebarComingSoon icon={Compass} label="AI-Карьерный трек" collapsed={collapsed} />
           <SidebarComingSoon icon={GraduationCap} label="Менторство" collapsed={collapsed} />
         </ul>
       </nav>
