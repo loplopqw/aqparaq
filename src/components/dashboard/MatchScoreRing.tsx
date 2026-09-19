@@ -7,7 +7,15 @@ const STATUS_VAR: Record<ReturnType<typeof matchScoreStatus>, string> = {
   critical: "var(--status-critical)",
 };
 
-export function MatchScoreRing({ score, size = 56 }: { score: number; size?: number }) {
+export function MatchScoreRing({
+  score,
+  size = 56,
+  showLabel = true,
+}: {
+  score: number;
+  size?: number;
+  showLabel?: boolean;
+}) {
   const status = matchScoreStatus(score);
   const stroke = 4;
   const radius = (size - stroke) / 2;
@@ -44,9 +52,11 @@ export function MatchScoreRing({ score, size = 56 }: { score: number; size?: num
           <span className="text-sm font-bold leading-none text-text-primary">{score}%</span>
         </div>
       </div>
-      <span className="text-center text-[10px] font-medium leading-tight text-text-muted">
-        Match Score
-      </span>
+      {showLabel && (
+        <span className="text-center text-[10px] font-medium leading-tight text-text-muted">
+          Match Score
+        </span>
+      )}
     </div>
   );
 }
