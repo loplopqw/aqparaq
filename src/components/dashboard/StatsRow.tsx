@@ -19,7 +19,7 @@ export function StatsRow({ listings }: { listings: Listing[] }) {
   ];
 
   return (
-    <div className="grid grid-cols-2 gap-3 px-6 py-4 sm:grid-cols-4">
+    <div className="grid grid-cols-2 gap-3 px-4 py-4 sm:grid-cols-4 sm:px-6">
       {stats.map((s) => (
         <StatTile key={s.label} label={s.label} value={s.value} />
       ))}

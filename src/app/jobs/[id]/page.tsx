@@ -31,13 +31,13 @@ export default async function JobDetailPage({ params }: { params: Promise<{ id: 
     <div className="flex min-h-screen flex-col">
       <Topbar title={listing.title} subtitle={listing.company} />
 
-      <div className="px-6 py-4">
+      <div className="px-4 py-4 sm:px-6">
         <Link href="/" className="inline-flex items-center gap-1.5 text-sm text-text-secondary hover:text-accent">
           <ArrowLeft size={14} /> Назад к ленте
         </Link>
       </div>
 
-      <div className="flex flex-1 flex-col gap-6 px-6 pb-10 lg:flex-row">
+      <div className="flex flex-1 flex-col gap-6 px-4 pb-10 sm:px-6 lg:flex-row">
         <div className="min-w-0 flex-1 space-y-5">
           <div className="rounded-lg border border-line bg-surface p-5">
             <div className="mb-3 flex flex-wrap items-center gap-2">

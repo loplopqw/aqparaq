@@ -36,7 +36,7 @@ export default function AlumniNetworkPage() {
         subtitle="Выпускники вашего вуза — связь для рефералов и карьерных советов"
       />
 
-      <div className="space-y-5 px-6 py-5">
+      <div className="space-y-5 px-4 py-5 sm:px-6">
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
           <StatTile label="Выпускников в сети" value={String(alumni.length)} />
           <StatTile label="Открыты к рефералу" value={String(referralCount)} />
