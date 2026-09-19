@@ -24,7 +24,7 @@ export default function CareerTrackPage() {
         subtitle="Персональный план развития на основе вашего профиля и рынка предложений"
       />
 
-      <div className="space-y-5 px-6 py-5">
+      <div className="space-y-5 px-4 py-5 sm:px-6">
         <div className="flex flex-col gap-3 rounded-lg border border-accent/30 bg-accent-soft p-5 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-start gap-3">
             <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent text-white">

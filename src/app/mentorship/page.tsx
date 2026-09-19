@@ -34,7 +34,7 @@ export default function MentorshipPage() {
     <div className="flex min-h-screen flex-col">
       <Topbar title="Менторство" subtitle="Найдите наставника среди выпускников вашего вуза" />
 
-      <div className="space-y-5 px-6 py-5">
+      <div className="space-y-5 px-4 py-5 sm:px-6">
         <div className="flex items-start gap-3 rounded-lg border border-accent/30 bg-accent-soft p-4">
           <Info size={16} className="mt-0.5 shrink-0 text-accent" />
           <p className="text-xs leading-relaxed text-text-secondary">

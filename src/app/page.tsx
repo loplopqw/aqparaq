@@ -62,7 +62,7 @@ export default function DashboardPage() {
       <CategoryTabs active={activeType} onChange={setActiveType} counts={counts} />
       <StatsRow listings={filtered} />
 
-      <div className="flex flex-1 flex-col gap-6 px-6 pb-8 lg:flex-row">
+      <div className="flex flex-1 flex-col gap-6 px-4 pb-8 sm:px-6 lg:flex-row">
         <FilterPanel filters={filters} onChange={setFilters} locations={locations} />
 
         <div className="min-w-0 flex-1">
