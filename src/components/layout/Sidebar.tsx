@@ -11,11 +11,9 @@ import {
   ChevronsLeft,
   ChevronsRight,
   Compass,
-  X,
 } from "lucide-react";
 import { useState } from "react";
 import { getUser } from "@/lib/data";
-import { useMobileNav } from "@/lib/mobile-nav-provider";
 import clsx from "clsx";
 
 const user = getUser();
@@ -25,42 +23,25 @@ const navItems = [
   { href: "/profile", label: "Личный кабинет", icon: User },
 ];
 
-function SidebarBody({
-  collapsed,
-  onNavigate,
-  onCollapseToggle,
-  showCollapseToggle,
-  onClose,
-}: {
-  collapsed: boolean;
-  onNavigate?: () => void;
-  onCollapseToggle?: () => void;
-  showCollapseToggle: boolean;
-  onClose?: () => void;
-}) {
+export function Sidebar() {
   const pathname = usePathname();
+  const [collapsed, setCollapsed] = useState(false);
 
   return (
-    <>
-      <div className="flex h-14 items-center justify-between gap-2 border-b border-line px-4">
-        <div className="flex items-center gap-2 min-w-0">
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-accent text-sm font-bold text-white">
-            AQ
-          </div>
-          {!collapsed && (
-            <span className="truncate text-[15px] font-semibold tracking-tight text-text-primary">
-              aqparaq
-            </span>
-          )}
+    <aside
+      className={clsx(
+        "sticky top-0 flex h-screen flex-col border-r border-line bg-surface transition-[width] duration-200",
+        collapsed ? "w-[72px]" : "w-[240px]"
+      )}
+    >
+      <div className="flex h-14 items-center gap-2 border-b border-line px-4">
+        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-accent text-sm font-bold text-white">
+          AQ
         </div>
-        {onClose && (
-          <button
-            onClick={onClose}
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-text-muted hover:bg-surface-hover hover:text-text-primary lg:hidden"
-            aria-label="Закрыть меню"
-          >
-            <X size={18} />
-          </button>
+        {!collapsed && (
+          <span className="truncate text-[15px] font-semibold tracking-tight text-text-primary">
+            aqparaq
+          </span>
         )}
       </div>
 
@@ -73,7 +54,6 @@ function SidebarBody({
               <li key={item.href}>
                 <Link
                   href={item.href}
-                  onClick={onNavigate}
                   className={clsx(
                     "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
                     active
@@ -107,7 +87,6 @@ function SidebarBody({
         {!collapsed ? (
           <Link
             href="/profile"
-            onClick={onNavigate}
             className="flex items-center gap-3 rounded-md p-2 transition-colors hover:bg-surface-hover"
           >
             <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent-soft text-xs font-semibold text-accent">
@@ -121,51 +100,19 @@ function SidebarBody({
         ) : (
           <Link
             href="/profile"
-            onClick={onNavigate}
             className="flex h-9 w-9 items-center justify-center rounded-full bg-accent-soft text-xs font-semibold text-accent"
           >
             {user.avatarInitials}
           </Link>
         )}
-        {showCollapseToggle && onCollapseToggle && (
-          <button
-            onClick={onCollapseToggle}
-            className="mt-2 hidden w-full items-center justify-center gap-2 rounded-md py-1.5 text-xs text-text-muted transition-colors hover:bg-surface-hover hover:text-text-primary lg:flex"
-          >
-            {collapsed ? <ChevronsRight size={16} /> : <ChevronsLeft size={16} />}
-          </button>
-        )}
+        <button
+          onClick={() => setCollapsed((c) => !c)}
+          className="mt-2 flex w-full items-center justify-center gap-2 rounded-md py-1.5 text-xs text-text-muted transition-colors hover:bg-surface-hover hover:text-text-primary"
+        >
+          {collapsed ? <ChevronsRight size={16} /> : <ChevronsLeft size={16} />}
+        </button>
       </div>
-    </>
-  );
-}
-
-export function Sidebar() {
-  const [collapsed, setCollapsed] = useState(false);
-  const { open, close } = useMobileNav();
-
-  return (
-    <>
-      {/* Desktop rail */}
-      <aside
-        className={clsx(
-          "sticky top-0 hidden h-screen flex-col border-r border-line bg-surface transition-[width] duration-200 lg:flex",
-          collapsed ? "w-[72px]" : "w-[240px]"
-        )}
-      >
-        <SidebarBody collapsed={collapsed} onCollapseToggle={() => setCollapsed((c) => !c)} showCollapseToggle />
-      </aside>
-
-      {/* Mobile off-canvas drawer */}
-      {open && (
-        <div className="fixed inset-0 z-50 lg:hidden">
-          <div className="absolute inset-0 bg-black/50" onClick={close} />
-          <aside className="absolute left-0 top-0 flex h-full w-[260px] flex-col bg-surface shadow-xl">
-            <SidebarBody collapsed={false} onNavigate={close} onClose={close} showCollapseToggle={false} />
-          </aside>
-        </div>
-      )}
-    </>
+    </aside>
   );
 }
 

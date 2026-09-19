@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { ThemeProvider } from "@/lib/theme-provider";
-import { MobileNavProvider } from "@/lib/mobile-nav-provider";
 import "./globals.css";
 
 const inter = Inter({
@@ -35,12 +34,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       </head>
       <body className="antialiased" suppressHydrationWarning>
         <ThemeProvider>
-          <MobileNavProvider>
-            <div className="flex">
-              <Sidebar />
-              <main className="min-w-0 flex-1">{children}</main>
-            </div>
-          </MobileNavProvider>
+          <div className="flex">
+            <Sidebar />
+            <main className="min-w-0 flex-1">{children}</main>
+          </div>
         </ThemeProvider>
       </body>
     </html>

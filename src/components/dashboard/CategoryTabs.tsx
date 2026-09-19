@@ -16,7 +16,7 @@ export function CategoryTabs({
   counts: Record<ListingType, number>;
 }) {
   return (
-    <div className="flex gap-1 overflow-x-auto border-b border-line px-4 sm:px-6">
+    <div className="flex gap-1 overflow-x-auto border-b border-line px-6">
       {TYPES.map((type) => {
         const isActive = active === type;
         return (

@@ -3,13 +3,13 @@ import type { UserProfile } from "@/lib/types";
 export function AcademicCard({ user }: { user: UserProfile }) {
   return (
     <div className="rounded-lg border border-line bg-surface p-5">
-      <div className="mb-3 flex flex-col gap-0.5 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mb-3 flex items-center justify-between">
         <h3 className="text-sm font-semibold text-text-primary">Университетский блок</h3>
-        <span className="truncate text-xs text-text-muted">{user.university}</span>
+        <span className="text-xs text-text-muted">{user.university}</span>
       </div>
 
-      <div className="mb-4 overflow-x-auto rounded-md border border-line">
-        <table className="w-full min-w-[420px] text-left text-sm">
+      <div className="mb-4 overflow-hidden rounded-md border border-line">
+        <table className="w-full text-left text-sm">
           <thead className="bg-surface-2 text-xs uppercase tracking-wide text-text-muted">
             <tr>
               <th className="px-3 py-2 font-medium">Курс</th>

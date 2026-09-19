@@ -18,7 +18,7 @@ export function StatsRow({ listings }: { listings: Listing[] }) {
   ];
 
   return (
-    <div className="grid grid-cols-2 gap-3 px-4 py-4 sm:grid-cols-4 sm:px-6">
+    <div className="grid grid-cols-2 gap-3 px-6 py-4 sm:grid-cols-4">
       {stats.map((s) => (
         <div key={s.label} className="rounded-lg border border-line bg-surface px-4 py-3">
           <p className="text-[11px] font-medium uppercase tracking-wide text-text-muted">{s.label}</p>

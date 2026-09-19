@@ -16,7 +16,7 @@ export default function ProfilePage() {
     <div className="flex min-h-screen flex-col">
       <Topbar title="Личный кабинет" subtitle="Профиль, образование и карьерные инструменты" />
 
-      <div className="space-y-5 px-4 py-5 sm:px-6">
+      <div className="space-y-5 px-6 py-5">
         <ProfileHeader user={user} />
 
         <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
