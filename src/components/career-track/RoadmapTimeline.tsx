@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { GraduationCap, Send, MessagesSquare, ArrowUpRight, Lock } from "lucide-react";
+import { GraduationCap, Send, MessagesSquare, ArrowUpRight } from "lucide-react";
 import type { RoadmapStage } from "@/lib/types";
 
 const KIND_ICON: Record<RoadmapStage["kind"], typeof GraduationCap> = {
@@ -39,11 +39,14 @@ export function RoadmapTimeline({ stages }: { stages: RoadmapStage[] }) {
                   <ArrowUpRight size={11} />
                 </Link>
               )}
-              {stage.kind === "interview" && (
-                <span className="mt-1.5 inline-flex items-center gap-1 rounded-full bg-surface-2 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-text-muted">
-                  <Lock size={9} />
-                  MOCK-интервью с ИИ — скоро
-                </span>
+              {stage.kind === "interview" && stage.interviewListingId && (
+                <Link
+                  href={`/jobs/${stage.interviewListingId}/interview`}
+                  className="mt-1.5 inline-flex items-center gap-1 text-xs font-medium text-accent hover:underline"
+                >
+                  Пройти MOCK-интервью с ИИ
+                  <ArrowUpRight size={11} />
+                </Link>
               )}
             </li>
           );
