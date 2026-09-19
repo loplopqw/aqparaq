@@ -39,6 +39,18 @@ export function getCourseById(id: string): CatalogCourse | undefined {
   return database.courseCatalog.find((c) => c.id === id);
 }
 
+export function getAlumni() {
+  return database.alumni;
+}
+
+export function getMentors() {
+  return database.alumni.filter((a) => a.openToMentorship);
+}
+
+export function getExpertiseTags(alumni = database.alumni) {
+  return Array.from(new Set(alumni.flatMap((a) => a.expertise))).sort();
+}
+
 export function formatMoney(value?: number, currency = "KZT") {
   if (value === undefined) return "";
   const formatted = new Intl.NumberFormat("ru-RU").format(value);

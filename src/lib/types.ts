@@ -123,6 +123,22 @@ export interface FilterState {
   sort: SortOption;
 }
 
+export interface AlumniProfile {
+  id: string;
+  name: string;
+  avatarInitials: string;
+  graduationYear: number;
+  specialty: string;
+  currentCompany: string;
+  currentRole: string;
+  location: string;
+  expertise: string[];
+  openToReferral: boolean;
+  openToMentorship: boolean;
+  bio: string;
+  linkedin: string;
+}
+
 export interface SkillGapSummaryItem {
   skill: string;
   count: number;
@@ -149,4 +165,5 @@ export interface Database {
   partners: Partner[];
   courseCatalog: CatalogCourse[];
   listings: Listing[];
+  alumni: AlumniProfile[];
 }
